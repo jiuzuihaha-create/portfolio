@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>赵奕聪 · AI 短剧制作师作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f1ec; --bg2:#ece7de; --surface:#fffdf9; --surface2:#f8f4ec;
+    --ink:#1c1917; --ink2:#57534e; --ink3:#8a8378;
+    --line:#ddd5c7; --line2:#cbc0ab;
+    --accent:#b45309; --accent-ink:#92400e; --accent-soft:#fef3c7;
+    --gold:#d97706;
+    --player-bg:#0c0a09;
+    --radius:14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#121110; --bg2:#171512; --surface:#1d1a17; --surface2:#24201c;
+      --ink:#f5f0e8; --ink2:#c9c0b2; --ink3:#9a9082;
+      --line:#35302a; --line2:#4a433a;
+      --accent:#f59e0b; --accent-ink:#fbbf24; --accent-soft:#2a2113;
+      --gold:#f59e0b;
+      color-scheme: dark;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2rem}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  /* ---------- top strip ---------- */
+  .topbar{border-bottom:1px solid var(--line);background:var(--bg)}
+  .topbar-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;flex-wrap:wrap}
+  .topbar .who{font-weight:900;letter-spacing:.02em;font-size:15px}
+  .topbar .who span{color:var(--ink3);font-weight:500;margin-left:8px;font-size:13px}
+  .topnav{display:flex;gap:4px;flex-wrap:wrap}
+  .topnav a{text-decoration:none;font-size:13.5px;font-weight:500;color:var(--ink2);padding:8px 10px;border-radius:8px;min-height:36px;display:inline-flex;align-items:center}
+  .topnav a:hover{background:var(--surface2);color:var(--ink)}
+  /* ---------- hero ---------- */
+  .hero{padding:34px 0 4px}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:start}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  .kicker i{width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block}
+  h1{font-family:"Noto Serif SC",serif;font-size:clamp(38px,6vw,58px);line-height:1.12;margin:18px 0 6px;font-weight:900;letter-spacing:.01em}
+  .role{font-size:clamp(18px,2.6vw,24px);font-weight:700;color:var(--ink);margin:0}
+  .role em{font-style:normal;color:var(--accent-ink)}
+  .intro{font-size:16.5px;color:var(--ink2);margin:16px 0 0;max-width:36em}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .chip{font-size:13px;font-weight:500;border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:7px 13px;color:var(--ink2)}
+  .chip b{color:var(--ink);font-weight:700}
+  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:14.5px;padding:11px 18px;border-radius:10px;min-height:44px;border:1px solid var(--line2);background:var(--surface);color:var(--ink)}
+  .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .btn.primary:hover{opacity:.88}
+  .btn:hover{border-color:var(--ink3)}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .stat{background:var(--surface);padding:18px 18px 14px}
+  .stat .num{font-family:"Noto Serif SC",serif;font-size:30px;font-weight:900;line-height:1.1}
+  .stat .num small{font-size:15px;font-weight:700;color:var(--accent-ink);margin-left:2px}
+  .stat .lab{font-size:12.5px;color:var(--ink3);margin-top:4px;font-weight:500}
+  .note-card{margin-top:14px;background:var(--surface2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;font-size:14px;color:var(--ink2)}
+  .note-card b{color:var(--ink)}
+  /* ---------- sections ---------- */
+  section{padding:30px 0 4px}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:22px;flex-wrap:wrap}
+  .sec-head h2{font-family:"Noto Serif SC",serif;font-size:26px;margin:0;font-weight:900}
+  .sec-head .en{font-size:12px;letter-spacing:.18em;font-weight:700;color:var(--ink3)}
+  .sec-head p{margin:4px 0 0;font-size:14px;color:var(--ink2);width:100%}
+  /* ---------- showreel ---------- */
+  .reel-grid{display:grid;grid-template-columns:340px 1fr;gap:32px;align-items:start}
+  .phone{margin:0 auto;width:min(340px,82vw);background:var(--player-bg);border-radius:28px;padding:10px;box-shadow:0 18px 44px rgba(0,0,0,.28);border:1px solid #292524}
+  .phone video{display:block;width:100%;aspect-ratio:9/16;border-radius:20px;background:#000;object-fit:cover}
+  .phone figcaption{color:#d6d3d1;font-size:12.5px;text-align:center;padding:10px 4px 4px}
+  .seg-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+  .seg{display:grid;grid-template-columns:86px 1fr auto;gap:14px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line)}
+  .seg:first-child{padding-top:2px}
+  .seg .t{font-variant-numeric:tabular-nums;font-size:13px;color:var(--ink3);font-weight:700;white-space:nowrap}
+  .seg .g{font-weight:900;letter-spacing:.06em;font-size:15.5px}
+  .seg .title{font-size:13.5px;color:var(--ink2)}
+  .seg .dur{font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .reel-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  /* ---------- lead case ---------- */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+  .case-item .phone{width:min(300px,80vw)}
+  .case-txt{max-width:360px;margin:16px auto 0}
+  .case-txt h3{margin:0;font-size:17px}
+  .case-txt h3 span{color:var(--accent-ink);font-size:12.5px;font-weight:700;letter-spacing:.1em;margin-left:8px;white-space:nowrap}
+  .case-txt p{margin:5px 0 0;font-size:14px;color:var(--ink2)}
+  /* ---------- case overview / assets / design ---------- */
+  .sub-head{display:flex;align-items:baseline;gap:12px;margin:26px 0 12px;flex-wrap:wrap}
+  .sub-head h3{font-family:"Noto Serif SC",serif;font-size:20px;margin:0;font-weight:900}
+  .sub-head .en{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--ink3)}
+  .sub-head p{margin:0;width:100%;font-size:13.5px;color:var(--ink2)}
+  .case-overview{display:grid;grid-template-columns:250px 1fr;gap:26px;align-items:start}
+  .poster-frame{margin:0;border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+  .poster-frame img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover}
+  .poster-frame figcaption{font-size:12.5px;color:var(--ink3);text-align:center;padding:9px 10px}
+  .case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .fact{background:var(--surface);padding:14px 16px}
+  .fact .k{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--ink3)}
+  .fact .v{font-size:16.5px;font-weight:900;margin-top:3px;line-height:1.4}
+  .fact .v small{font-size:12.5px;font-weight:500;color:var(--ink2)}
+  .case-lede{font-size:15px;color:var(--ink2);margin:16px 0 0}
+  .case-lede b{color:var(--ink)}
+  .stills{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .still{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:0}
+  .still img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover}
+  .still figcaption{padding:11px 14px 12px;font-size:13px;color:var(--ink2)}
+  .still figcaption b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  .still figcaption b span{color:var(--accent-ink);font-size:11.5px;font-weight:700;letter-spacing:.1em;margin-left:8px;white-space:nowrap}
+  .asset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .asset{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:0}
+  .asset img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#fff}
+  .asset figcaption{padding:11px 14px 12px;font-size:13px;color:var(--ink2)}
+  .asset figcaption b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  .design{background:var(--surface2);border:1px solid var(--line2);border-radius:var(--radius);padding:20px;margin-top:26px}
+  .design .sub-head{margin-top:0}
+  .standard{display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 18px}
+  .standard .std{flex:1 1 250px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px;color:var(--ink2)}
+  .standard .std b{display:block;color:var(--accent-ink);font-size:12px;letter-spacing:.1em;margin-bottom:3px}
+  .ver-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ver{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+  .ver img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#fff}
+  .ver figcaption{padding:12px 14px 13px}
+  .ver .vh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ver .vn{font-weight:900;font-size:15px}
+  .verdict{font-size:11.5px;font-weight:700;letter-spacing:.05em;border-radius:999px;padding:3px 9px;border:1px solid var(--line2);color:var(--ink3)}
+  .verdict.final{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+  .ver p{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+  .ver.final{border:2px solid var(--accent);margin-top:16px}
+  .kevin-row{display:grid;grid-template-columns:1.25fr 1fr;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .kevin-row img{display:block;width:100%;height:100%;object-fit:cover;background:#fff}
+  .kevin-row .kt{padding:16px 18px}
+  .kevin-row .kt p{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+  .design-sum{margin:16px 0 0;font-size:14px;color:var(--ink2);border-top:1px dashed var(--line2);padding-top:14px}
+  .design-sum b{color:var(--ink)}
+  /* ---------- team cases ---------- */
+  .team-case{border-top:1px dashed var(--line2);padding-top:24px;margin-top:26px}
+  .team-case:first-of-type{border-top:none;padding-top:0;margin-top:0}
+  .team-title{font-family:"Noto Serif SC",serif;font-size:21px;margin:0;font-weight:900}
+  .team-title .en-title{display:block;font-family:"Noto Sans SC",sans-serif;font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:.04em;margin-top:2px}
+  .team-layout{display:grid;grid-template-columns:300px 1fr;gap:30px;align-items:start;margin-top:18px}
+  .team-layout .phone{width:min(300px,80vw)}
+  .team-body p{margin:0;font-size:15px;color:var(--ink2)}
+  .team-body p b{color:var(--ink)}
+  .team-stills{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;max-width:520px}
+  .injured{background:var(--surface2);border:1px solid var(--line2);border-radius:var(--radius);padding:20px;margin-top:24px}
+  .injured .sub-head{margin-top:0}
+  .injured-final{margin:0 0 16px;background:var(--surface);border:2px solid var(--accent);border-radius:12px;overflow:hidden}
+  .injured-final img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#fff}
+  .injured-final figcaption{padding:12px 14px 13px;font-size:13.5px;color:var(--ink2)}
+  .injured-final figcaption b{display:block;font-size:15px;color:var(--ink);margin-bottom:2px}
+  .injured-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .injured-item{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+  .injured-item img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#fff}
+  .injured-item figcaption{padding:11px 14px 12px;font-size:13.5px;color:var(--ink2)}
+  .injured-item figcaption b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  /* ---------- making of ---------- */
+  .process-text{font-size:15px;color:var(--ink2);max-width:54em;margin:0 0 18px}
+  .breakdown-frame{margin:0;border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .breakdown-frame img{display:block;width:100%;height:auto}
+  .breakdown-frame figcaption{font-size:12.5px;color:var(--ink3);text-align:center;padding:9px 10px;background:var(--surface)}
+  .process-note{margin:14px 0 0;font-size:13.5px;color:var(--ink3)}
+  .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .model-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:0}
+  .model-item img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;background:#000}
+  .model-item figcaption{padding:11px 14px 12px;font-size:13px;color:var(--ink2)}
+  .model-item figcaption b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  .model-notes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .model-note{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;font-size:14px;color:var(--ink2);line-height:1.7}
+  /* ---------- works ---------- */
+  .works{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .work{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .work .ph{aspect-ratio:16/10;overflow:hidden;background:#1c1917}
+  .work .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .work .bd{padding:14px 16px 16px}
+  .work .ttl{font-weight:700;font-size:15.5px;line-height:1.45}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .tag{font-size:11.5px;font-weight:700;letter-spacing:.05em;border:1px solid var(--line2);border-radius:6px;padding:3px 8px;color:var(--ink2)}
+  .tag.hot{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+  /* ---------- process ---------- */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+  .step{padding:18px 16px 16px;border-right:1px solid var(--line)}
+  .step:last-child{border-right:none}
+  .step .no{font-family:"Noto Serif SC",serif;font-size:13px;font-weight:900;color:var(--accent-ink);letter-spacing:.1em}
+  .step h3{margin:6px 0 6px;font-size:16px}
+  .step p{margin:0;font-size:13px;color:var(--ink2);line-height:1.6}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .tool-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .tool-card h3{margin:0 0 4px;font-size:15.5px}
+  .tool-card p{margin:0 0 12px;font-size:13.5px;color:var(--ink2)}
+  /* ---------- personal ---------- */
+  .personal{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .p-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .p-card h3{margin:0 0 6px;font-size:17px}
+  .p-card p{margin:0;font-size:14px;color:var(--ink2)}
+  .p-nums{display:flex;gap:26px;margin-top:16px;flex-wrap:wrap}
+  .p-nums .n{font-family:"Noto Serif SC",serif;font-size:26px;font-weight:900;line-height:1.15}
+  .p-nums .l{font-size:12px;color:var(--ink3);font-weight:500}
+  .personal-videos{display:grid;grid-template-columns:1.55fr 1fr;gap:24px;margin-top:16px;align-items:start;background:var(--player-bg);border-radius:var(--radius);padding:22px}
+  .p-video{margin:0;background:transparent;border:none;overflow:visible}
+  .p-video video{display:block;width:100%;background:#000;border-radius:10px}
+  .p-video.land video{aspect-ratio:16/9}
+  .p-video.vert video{aspect-ratio:9/16;width:auto;height:424px;max-width:100%;margin:0 auto}
+  .p-video figcaption{padding:11px 2px 0;font-size:13.5px;color:#d6d3d1}
+  .p-video figcaption b{color:#fff}
+  .p-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .p-meta span{font-size:11.5px;font-weight:700;letter-spacing:.05em;border:1px solid #44403c;border-radius:6px;padding:3px 8px;color:#a8a29e}
+  /* ---------- experience / contact ---------- */
+  .exp{display:flex;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;flex-wrap:wrap;align-items:flex-start}
+  .exp .when{font-size:13px;font-weight:700;color:var(--accent-ink);white-space:nowrap;padding-top:2px}
+  .exp h3{margin:0 0 4px;font-size:16.5px}
+  .exp p{margin:0;font-size:14px;color:var(--ink2);max-width:52em}
+  .contact{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .c-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+  .c-card .k{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--ink3)}
+  .c-card .v{font-size:16px;font-weight:700;margin-top:5px;word-break:break-all}
+  .c-card .v a{text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:1px}
+  .c-card .s{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  footer{margin-top:52px;border-top:1px solid var(--line);padding:22px 0 34px}
+  footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink3)}
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr}
+    .reel-grid{grid-template-columns:1fr}
+    .works{grid-template-columns:1fr 1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    .step{border-bottom:1px solid var(--line)}
+    .contact{grid-template-columns:1fr 1fr}
+    .case-overview{grid-template-columns:1fr}
+    .team-layout{grid-template-columns:1fr}
+    .team-layout .phone{margin:0 auto}
+    .team-stills{margin-left:auto;margin-right:auto}
+    .poster-frame{max-width:290px;margin:0 auto;width:100%}
+    .asset-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:560px){
+    .case-grid{grid-template-columns:1fr}
+    .asset-grid,.scene-grid,.ver-grid,.kevin-row,.stills,.team-stills,.injured-grid,.model-grid,.model-notes{grid-template-columns:1fr}
+    .injured{padding:16px}
+    .case-facts{grid-template-columns:1fr 1fr}
+    .design{padding:16px}
+    .works{grid-template-columns:1fr}
+    .tools,.personal,.personal-videos{grid-template-columns:1fr}
+    .contact{grid-template-columns:1fr}
+    .seg{grid-template-columns:70px 1fr}
+    .seg .dur{display:none}
+    .hero{padding-top:30px}
+    section{padding-top:34px}
+  }
+
+  /* ---------- duty / info fill cards ---------- */
+  .duty{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .duty .k{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--ink3);margin-bottom:8px}
+  .duty ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:13.5px;color:var(--ink2)}
+  .duty li::before{content:"—";color:var(--accent);margin-right:6px;font-weight:700}
+  .asset-info{background:var(--surface2);border:1px dashed var(--line2);border-radius:var(--radius);padding:16px 18px;font-size:13.5px;color:var(--ink2);display:flex;flex-direction:column;justify-content:center}
+  .asset-info b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:4px}
+  .injured-note{background:var(--surface);border:1px dashed var(--line2);border-radius:12px;padding:14px 16px;font-size:13.5px;color:var(--ink2);display:flex;flex-direction:column;justify-content:center}
+  .injured-note b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:3px}
+  /* ---------- making-of part heads ---------- */
+  .part-head{display:flex;gap:14px;align-items:flex-start;margin:34px 0 4px;border-top:2px solid var(--ink);padding-top:16px}
+  .part-head:first-of-type{margin-top:6px}
+  .part-head .pk{font-family:"Noto Serif SC",serif;font-size:22px;font-weight:900;color:var(--bg);background:var(--ink);border-radius:8px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex:none}
+  .part-head h3{font-family:"Noto Serif SC",serif;font-size:21px;margin:0;font-weight:900}
+  .part-head p{margin:2px 0 0;font-size:13.5px;color:var(--ink2)}
+  /* ---------- overview ---------- */
+  .overview{padding:40px 0 8px}
+  .ov-head{margin-bottom:22px}
+  .ov-head h2{font-family:"Noto Serif SC",serif;font-size:clamp(30px,4.6vw,44px);line-height:1.15;margin:0;font-weight:900}
+  .ov-head p{margin:10px 0 0;font-size:15px;color:var(--ink2);max-width:40em}
+  .ov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .ov-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-decoration:none;box-shadow:0 6px 18px rgba(28,25,23,.06);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+  .ov-card:hover,.ov-card:focus-visible{transform:translateY(-7px);box-shadow:0 20px 38px rgba(28,25,23,.16);border-color:var(--line2)}
+  .ov-card .ph{aspect-ratio:16/9;overflow:hidden;background:#1c1917}
+  .ov-card.wide{grid-column:span 2}
+  .ov-card.wide .ph{aspect-ratio:32/9}
+  .ov-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .ov-card .bd{padding:13px 16px 15px;display:flex;flex-direction:column;gap:4px;flex:1}
+  .ov-card .bt{font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ov-card .bt .arr{color:var(--accent-ink);font-weight:900;flex:none}
+  .ov-card .bd p{margin:0;font-size:13px;color:var(--ink2)}
+  .ov-contact{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px}
+  .ov-contact .bt{font-weight:900;font-size:16px}
+  .ov-contact .bs{font-size:13.5px;color:var(--ink2)}
+  .ov-contact .arr{color:var(--accent-ink);font-weight:900;font-size:18px;flex:none}
+  @media (max-width:900px){.ov-grid{grid-template-columns:1fr 1fr}.ov-card.wide{grid-column:span 2}.ov-card.wide .ph{aspect-ratio:16/9}}
+  @media (max-width:560px){.ov-grid{grid-template-columns:1fr}.ov-card.wide{grid-column:span 1}.ov-contact{flex-direction:column;align-items:flex-start}.duty ul{grid-template-columns:1fr}.personal-videos{padding:16px}.p-video.vert video{height:min(424px,120vw)}}
+  @media (prefers-reduced-motion: reduce){.ov-card{transition:none}.ov-card:hover,.ov-card:focus-visible{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div class="who">赵奕聪<span>AI 短剧制作师 · 深圳</span></div>
+    <nav class="topnav" aria-label="页面导航">
+      <a href="#showreel">混剪</a>
+      <a href="#case">主导案例</a>
+      <a href="#team">团队案例</a>
+      <a href="#making">制作过程</a>
+      <a href="#works">剧目范围</a>
+      <a href="#process">制作流程</a>
+      <a href="#personal">个人创作</a>
+      <a href="#contact">联系方式</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="wrap">
+
+  <!-- OVERVIEW -->
+  <section class="overview" id="overview" aria-label="内容总览">
+    <div class="ov-head">
+      <h2>作品集展示总览</h2>
+      <p>20+ 部海外仿真人短剧的全流程制作记录：混剪、主导与团队案例、制作方法、剧目与个人创作，一屏看全。点击任意卡片，直达对应板块。</p>
+    </div>
+    <div class="ov-grid">
+      <a class="ov-card wide" href="#showreel"><div class="ph"><img decoding="async" src="assets/poster.jpg" alt="作品混剪封面"></div><div class="bd"><div class="bt">作品混剪<span class="arr">→</span></div><p>89 秒竖屏混剪 · 6 部作品、8 个片段，先看整体实力。</p></div></a>
+      <a class="ov-card" href="#case"><div class="ph"><img loading="lazy" decoding="async" src="assets/case-poster.jpg" alt="主导案例海报"></div><div class="bd"><div class="bt">主导案例<span class="arr">→</span></div><p>《The Ex-Con Mom Strikes Back》· 77 集独立主导全流程。</p></div></a>
+      <a class="ov-card" href="#team"><div class="ph"><img loading="lazy" decoding="async" src="assets/team2-poster.jpg" alt="团队案例海报"></div><div class="bd"><div class="bt">团队案例<span class="arr">→</span></div><p>两部协作作品：尾部十集全流程收尾，与全剧人物设计。</p></div></a>
+      <a class="ov-card" href="#making"><div class="ph"><img loading="lazy" decoding="async" src="assets/process-step1-summary.png" alt="制作过程：剧本拆解表节选"></div><div class="bd"><div class="bt">制作过程<span class="arr">→</span></div><p>自制剧与重制剧两条路径，及模型选择与后期打包标准。</p></div></a>
+      <a class="ov-card" href="#works"><div class="ph"><img loading="lazy" decoding="async" src="assets/still-ceo.jpg" alt="剧目范围：《He Planned My Accidental Love》画面"></div><div class="bd"><div class="bt">剧目范围<span class="arr">→</span></div><p>6 部海外仿真人短剧，覆盖现代、玄幻与兽人题材。</p></div></a>
+      <a class="ov-card" href="#process"><div class="ph"><img loading="lazy" decoding="async" src="assets/process-step4-editing.png" alt="制作流程：剪辑时间线"></div><div class="bd"><div class="bt">制作流程<span class="arr">→</span></div><p>从剧本拆解到全剧打包的五步完整链路。</p></div></a>
+      <a class="ov-card" href="#personal"><div class="ph"><img loading="lazy" decoding="async" src="assets/personal-02-poster.jpg" alt="个人创作：卡点剪辑封面"></div><div class="bd"><div class="bt">个人创作<span class="arr">→</span></div><p>「久醉哈哈」双平台粉丝合计 5 万，自制短剧与卡点剪辑。</p></div></a>
+      <a class="ov-card ov-contact" href="#contact"><div><div class="bt">经历与联系</div><div class="bs">一周内到岗 · 深圳 · 电话 138 2287 9881 · 邮箱 1011388066@qq.com</div></div><span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker"><i></i>一周内到岗 · 深圳</span>
+        <h1>赵奕聪</h1>
+        <p class="role">AI 短剧制作师 · <em>全流程独立完成</em></p>
+        <p class="intro">AI 短剧制作师，参与过 20+ 部海外仿真人短剧，从剧本拆解、资产制作，到 AI 视频生成、剪辑与全剧打包均可独立完成。</p>
+        <div class="meta-row">
+          <span class="chip">前任职 · <b>深圳稻谷文化传媒</b></span>
+          <span class="chip">抖音 · <b>久醉哈哈</b></span>
+          <span class="chip">B 站 · <b>久醉哈哈</b></span>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="#showreel">▶ 看 90 秒混剪</a>
+          <a class="btn" href="tel:13822879881">电话联系</a>
+          <a class="btn" href="mailto:1011388066@qq.com">发邮件</a>
+        </div>
+      </div>
+      <div>
+        <div class="stats" aria-label="关键数据">
+          <div class="stat"><div class="num">20+<small>部</small></div><div class="lab">参与海外仿真人短剧</div></div>
+          <div class="stat"><div class="num">3–5<small>分钟/天</small></div><div class="lab">平均成片产出</div></div>
+          <div class="stat"><div class="num">3.8<small>万</small></div><div class="lab">抖音粉丝 · 久醉哈哈</div></div>
+          <div class="stat"><div class="num">1.2<small>万</small></div><div class="lab">B 站粉丝 · 久醉哈哈</div></div>
+        </div>
+        <div class="note-card"><b>独立交付能力：</b>从剧本拆解、资产制作、AI 视频生成、剪辑成片到全剧打包，可独立完成整部短剧的全部制作环节；交付物涵盖分集整合、统一命名、标题与海报、多比例版本、无字幕版及全剧字幕包。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOWREEL -->
+  <section id="showreel">
+    <div class="sec-head">
+      <h2>作品混剪</h2><span class="en">SHOWREEL · 2026</span>
+      <p>89 秒竖屏混剪，精选 6 部作品的 8 个代表性片段，覆盖动作复仇、现代情感、重生、奇幻战争与兽人爱情等题材。每段均标注题材类型，直观呈现题材跨度与镜头表现力。</p>
+    </div>
+    <div class="reel-grid">
+      <figure class="phone">
+        <video controls playsinline preload="metadata" poster="assets/poster.jpg" src="assets/showreel-web.mp4" aria-label="赵奕聪 AI 短剧作品混剪，89 秒竖屏视频"></video>
+        <figcaption>9:16 竖屏 · 原片 1080×1920 · 89 秒</figcaption>
+      </figure>
+      <div>
+        <ol class="seg-list">
+          <li class="seg"><span class="t">00:00</span><div><div class="g">ACTION / REVENGE</div><div class="title">《The Ex-Con Mom Strikes Back》· 动作 / 复仇</div></div><span class="dur">开场钩子</span></li>
+          <li class="seg"><span class="t">中段</span><div><div class="g">DANCE / FIGHT</div><div class="title">《The Miracle Doctor Returns》· 舞蹈 / 打斗</div></div><span class="dur">动作段</span></li>
+          <li class="seg"><span class="t">中段</span><div><div class="g">CEO ROMANCE</div><div class="title">《He Planned My Accidental Love》· 霸道总裁</div></div><span class="dur">现代情感</span></li>
+          <li class="seg"><span class="t">中段</span><div><div class="g">REBIRTH</div><div class="title">《Rise from the Ashes》· 重生</div></div><span class="dur">情绪转折</span></li>
+          <li class="seg"><span class="t">后段</span><div><div class="g">MAGIC / FANTASY WAR</div><div class="title">《Revenge of the Iron Rose》· 西方魔法 / 玄幻战争</div></div><span class="dur">奇幻大场面</span></li>
+          <li class="seg"><span class="t">结尾</span><div><div class="g">BEASTMAN ROMANCE</div><div class="title">《Deer Unleashed Memories》· 兽人爱情</div></div><span class="dur">收尾高光</span></li>
+        </ol>
+        <div class="reel-facts">
+          <span class="chip">题材跨度 <b>现代 · 玄幻 · 兽人</b></span>
+          <span class="chip">同一角色 <b>形象与表演连贯</b></span>
+          <span class="chip">剪辑与节奏 <b>本人完成</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEAD CASE -->
+  <section id="case">
+    <div class="sec-head">
+      <h2>主导案例</h2><span class="en">LEAD CASE</span>
+      <p>《The Ex-Con Mom Strikes Back》——西方现代复仇题材，共 77 集，单集约 1.5 分钟，成片总时长约 2 小时。本人独立主导全流程制作，涵盖剧本拆解、人物／场景／道具资产、AI 视频生成、剪辑及后期打包。</p>
+    </div>
+    <div class="case-overview">
+      <figure class="poster-frame">
+        <img loading="lazy" decoding="async" src="assets/case-poster.jpg" alt="主导案例全剧海报：女主 Mia 穿黑西装站在法院前，两手各护着一个儿子，画面下方带金色与红色剧名 The Ex-Con Mom Strikes Back">
+        <figcaption>全剧海报 · 带剧名版 · 9:16 竖版为主（另有 3:4、4:3 两版同步交付）</figcaption>
+      </figure>
+      <div>
+        <div class="case-facts">
+          <div class="fact"><div class="k">题材</div><div class="v">西方现代复仇</div></div>
+          <div class="fact"><div class="k">规格</div><div class="v">77 集 <small>· 每集约 1.5 分钟</small></div></div>
+          <div class="fact"><div class="k">成片总时长</div><div class="v">约 2 小时</div></div>
+          <div class="fact"><div class="k">我的角色</div><div class="v">独立主导 <small>· 全流程</small></div></div>
+          <div class="fact"><div class="k">图像工具</div><div class="v">GPT Images <small>（制作期 Images 2.0 / 2.5，现 Images 2.6）</small> · Nano Banana</div></div>
+          <div class="fact"><div class="k">视频工具</div><div class="v">Seedance 2.5 <small>/ Wan 3.0 / MiniMax H3</small></div></div>
+        </div>
+        <p class="case-lede">叙事核心为<b>母子线</b>：Mia 出狱后寻回被夺走的两个儿子 Leo 与 Andy，并被迫嫁给昏迷中的 Kevin。她兼具 Wilson 家少夫人与隐秘身份「幻影神医」双重身份，是唯一能救治 Kevin 的人。以下两段均为原片截取，保留原声与原字幕，未经配乐与重剪。</p>
+        <div class="duty"><div class="k">核心职责 · 独立主导</div><ul><li>剧本拆解：人物／场景／道具三表</li><li>资产制作：人物定版与状态资产</li><li>AI 视频生成：逐镜生成与质检</li><li>剪辑成片：节奏、卡点与音画同步</li><li>全剧打包：多版本交付与字幕包</li><li>海报与标题：多比例版本同步交付</li></ul></div>
+      </div>
+    </div>
+
+    <!-- STILLS -->
+    <div class="sub-head">
+      <h3>剧照</h3><span class="en">STILLS</span>
+      <p>三张代表性剧照，分别对应母子主线、神医身份与家族冲突三条叙事线。</p>
+    </div>
+    <div class="stills">
+      <figure class="still"><img loading="lazy" decoding="async" src="assets/case-still-family.jpg" alt="剧照：Mia 穿黑西装坐在沙发中间，左边是穿蓝色 T 恤的 Leo，右边是穿橙色格子衬衫的 Andy，母子三人同框"><figcaption><b>母子三人<span>MOTHER &amp; SONS</span></b>Mia 与 Leo、Andy 同框。母子关系是全剧的情感主线，也是人物资产一致性要求最高的组合。</figcaption></figure>
+      <figure class="still"><img loading="lazy" decoding="async" src="assets/case-still-doctor.jpg" alt="剧照：Mia 在 Kevin 床边俯身为他做检查，背后站着医生、白胡子老头和金发老太太"><figcaption><b>幻影神医<span>PHANTOM DOCTOR</span></b>Mia 在 Kevin 床边为其检查，家人与医生在场见证，「幻影神医」的隐藏身份在此首次揭示。</figcaption></figure>
+      <figure class="still"><img loading="lazy" decoding="async" src="assets/case-still-door.jpg" alt="剧照：Kevin 坐在轮椅上握着 Mia 的手，背后站着 Dylan 和保镖，背景是豪宅大门"><figcaption><b>豪宅门口<span>FAMILY CONFLICT</span></b>苏醒后的 Kevin 坐轮椅握住 Mia 的手，Dylan 与保镖在后，家族矛盾由暗转明。</figcaption></figure>
+    </div>
+    <div class="case-grid" style="margin-top:30px">
+      <div class="case-item">
+        <figure class="phone">
+          <video controls playsinline preload="metadata" poster="assets/case-open-poster.jpg" src="assets/case-open-web.mp4" aria-label="主导案例片段一：开场高光，卧室对峙"></video>
+          <figcaption>9:16 竖屏 · 20 秒 · 原片截取</figcaption>
+        </figure>
+        <div class="case-txt">
+          <h3>片段一 · 开场 / 高光<span>OPENING</span></h3>
+          <p>卧室对峙：开场即以“I swear I'll make you pay!”的当面指责建立冲突，女主由受责难转为立誓救人。前 3 秒完成钩子，情绪浓度为全剧之最。</p>
+        </div>
+      </div>
+      <div class="case-item">
+        <figure class="phone">
+          <video controls playsinline preload="metadata" poster="assets/case-turn-poster.jpg" src="assets/case-turn-web.mp4" aria-label="主导案例片段二：情绪转折，Leo 喊出 Mommy"></video>
+          <figcaption>9:16 竖屏 · 30 秒 · 原片截取</figcaption>
+        </figure>
+        <div class="case-txt">
+          <h3>片段二 · 转折 / 情绪转折<span>TURNING POINT</span></h3>
+          <p>餐桌对峙僵持之际，Leo 一声“Mommy”打破局面：女主由对峙、错愕到得知 Leo 身世的震动，情绪在 30 秒内完成反转。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSETS -->
+    <div class="sub-head">
+      <h3>人物与场景资产</h3><span class="en">CHARACTERS &amp; SETS</span>
+      <p>资产标准统一：同一角色在不同造型与状态下保持同一面部；高频场景全剧复用、形象一致。每位主角均建有正／侧／背三视图与面部特写的完整资产图。</p>
+    </div>
+    <div class="asset-grid">
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-mia-final.jpg" alt="女主 Mia 定稿资产图：黑色皮衣造型，正面、侧面、背面三视图与面部特写"><figcaption><b>Mia · 定稿</b>皮衣造型，全剧主形象：出狱归来的母亲，兼「幻影神医」身份。</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-mia-suit.jpg" alt="女主 Mia 西装资产图：黑色西装长裤造型，三视图与面部特写"><figcaption><b>Mia · 西装</b>黑西装造型，与海报形象为同一套，对应 Wilson 家少夫人的身份气场。</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-kevin-final.jpg" alt="男主 Kevin 定稿资产图：墨绿色三件套西装，三视图与面部特写"><figcaption><b>Kevin · 定稿</b>墨绿三件套西装，Wilson 家长子，胸针为固定识别点。</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-kevin-wheelchair.jpg" alt="男主 Kevin 轮椅资产图：白衬衫配马甲，坐在轮椅上的三视图"><figcaption><b>Kevin · 轮椅</b>昏迷苏醒期状态造型：马甲、领带等识别元素不变，仅变更身体状态。</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-kevin-injured.jpg" alt="男主 Kevin 受伤状态资产图"><figcaption><b>Kevin · 受伤</b>受伤状态造型：面部不变，身体状态按剧情递进，连续性不断。</figcaption></figure>
+      <div class="asset-info"><b>资产规范</b>全部人物资产执行同一标准：面部特写＋正／侧／背三视图；以固定识别点（发型、配饰、标志性单品）锚定角色，服装与身体状态按剧情增减，面部绝不漂移。场景资产同理，高频场景一次建档、全剧复用。</div>
+    </div>
+    <div class="scene-grid" style="margin-top:16px">
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-scene-mansion.jpg" alt="场景资产：Wilson 家豪宅外景，石材立面、台阶与喷泉庭院"><figcaption><b>场景 · 豪宅外景</b>Wilson 家庄园正立面与喷泉庭院，全剧核心场景。</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/case-scene-bedroom.jpg" alt="场景资产：蓝白调卧室，大床、窗边座与床头泰迪熊"><figcaption><b>场景 · 卧室</b>蓝白调主卧，床尾的泰迪熊为母子线中反复出现的固定细节。</figcaption></figure>
+    </div>
+
+    <!-- DESIGN PROCESS -->
+    <div class="design">
+      <div class="sub-head">
+        <h3>女主形象设计过程</h3><span class="en">DESIGN PROCESS · MIA</span>
+        <p>女主 Mia 的形象历经五轮迭代，每轮均依据导演反馈定向修正后重新提交。服装方向始终保持一致——黑色皮衣、不对称长裙与长靴；五轮调整的对象始终是面部：欧美特征与年轻感。</p>
+      </div>
+      <div class="standard">
+        <div class="std"><b>标准一 · 地域特征</b>面向欧美市场，面部须为纯粹欧美特征，不带亚洲或混血感，此为不可让步的底线。</div>
+        <div class="std"><b>标准二 · 辨识度</b>年轻、明艳且具记忆点，第一眼即能留住观众，撑得起女主的戏份权重。</div>
+      </div>
+      <div class="ver-grid">
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-mia-v1.jpg" alt="女主第 1 版设计稿：黑发低发髻，面部偏亚洲感">
+          <figcaption><div class="vh"><span class="vn">第 1 版 · 初版</span><span class="verdict">推翻重做</span></div><p>黑发低发髻。面部偏亚洲特征，且略带 3D 感、真人感不足。导演意见：推翻重做。</p></figcaption>
+        </figure>
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-mia-v2.jpg" alt="女主第 2 版设计稿：发型利落，但五官仍带亚洲血统感">
+          <figcaption><div class="vh"><span class="vn">第 2 版</span><span class="verdict">否决</span></div><p>发型更为利落，整体观感干净，但五官仍带混血感，未达到纯欧美特征——未通过标准一。</p></figcaption>
+        </figure>
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-mia-v3.jpg" alt="女主第 3 版设计稿：浅色高马尾，很欧美、很有战斗范，但颧骨隆起显老">
+          <figcaption><div class="vh"><span class="vn">第 3 版</span><span class="verdict">否决</span></div><p>改用浅色发后，欧美特征与战斗感均成立，但颧骨隆起明显、年龄感偏大——未通过标准二。</p></figcaption>
+        </figure>
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-mia-v4.jpg" alt="女主第 4 版设计稿：浅色盘发，欧美感强，但颧骨突出、年龄感偏大">
+          <figcaption><div class="vh"><span class="vn">第 4 版</span><span class="verdict">否决</span></div><p>延续第 3 版方向：欧美特征与战斗感成立，仍存在颧骨突出、年龄感偏大的问题。</p></figcaption>
+        </figure>
+      </div>
+      <figure class="ver final">
+        <img loading="lazy" decoding="async" src="assets/design-mia-v5.jpg" alt="女主第 5 版定稿：欧美范成立，颧骨不突、不显老，年轻吸睛">
+        <figcaption><div class="vh"><span class="vn">第 5 版 · 定稿</span><span class="verdict final">最终采用</span></div><p>欧美特征成立，颧骨平缓、年龄感适中，年轻明艳且不失战斗感，两条标准同时达标。全剧 Mia 与海报均以此版为准，定稿资产图见上方人物资产。</p></figcaption>
+      </figure>
+      <div class="ver-grid" style="margin-top:16px">
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-kevin-v1.jpg" alt="男主 Kevin 初版设计稿：墨绿西装，面部略带 3D 感">
+          <figcaption><div class="vh"><span class="vn">附 · 男主初版</span><span class="verdict">优化改版</span></div><p>Kevin 初版同样存在 3D 感偏重、真人感不足的问题，后按同一套标准优化改版。</p></figcaption>
+        </figure>
+        <figure class="ver">
+          <img loading="lazy" decoding="async" src="assets/design-kevin-final.jpg" alt="男主 Kevin 定稿设计稿：墨绿色三件套西装，真人感更强，正面、侧面、背面三视图与面部特写">
+          <figcaption><div class="vh"><span class="vn">附 · 男主定稿</span><span class="verdict final">最终采用</span></div><p>优化后的定稿：去除 3D 感、强化真人质感，面部与三视图均以此版为准，全剧与上方人物资产统一采用。</p></figcaption>
+        </figure>
+      </div>
+      <p class="design-sum"><b>小结：</b>五轮迭代即两条标准的逐项达标过程：前两版未通过地域特征，第三、四版特征成立但年龄感偏大，第五版两项同时达标，遂予定稿。</p>
+    </div>
+  </section>
+
+  <!-- TEAM CASES -->
+  <section id="team">
+    <div class="sec-head">
+      <h2>团队案例</h2><span class="en">TEAM CASES</span>
+      <p>两部与搭档协作完成的海外短剧：一部负责尾部十集的全流程收尾，一部负责全剧人物设计与半数集数的制作。</p>
+    </div>
+
+    <!-- TEAM CASE 1 -->
+    <div class="team-case">
+      <h3 class="team-title">团队案例一 · Revenge of the Iron Rose<span class="en-title">西方玄幻战争</span></h3>
+      <div class="team-layout">
+        <figure class="phone">
+          <video controls playsinline preload="metadata" poster="assets/team1-poster.jpg" src="assets/team1-web.mp4" aria-label="团队案例一《Revenge of the Iron Rose》片段：森林对峙，20 秒"></video>
+          <figcaption>9:16 竖屏 · 20 秒 · 原片截取</figcaption>
+        </figure>
+        <div class="team-body">
+          <p>西方玄幻战争题材。本人负责尾部十集的全流程制作，包括剧本拆解、资产制作、AI 视频生成、剪辑与打包，重点处理全剧收尾与结尾钩子；后十集的场景搭建主要由本人完成。片段截自森林对峙：男主得知胜利真相后与女主决裂，一场对话完成反转与收束。</p>
+          <div class="team-stills">
+            <figure class="still"><img loading="lazy" decoding="async" src="assets/team1-still-castle.jpg" alt="剧照：银甲骑士在城堡前抬手指向前方，身后是火炮与军队"><figcaption><b>剧照 · 城堡备战</b>银甲骑士在城堡与火炮前下令，战争一触即发。</figcaption></figure>
+            <figure class="still"><img loading="lazy" decoding="async" src="assets/team1-still-forest.jpg" alt="剧照：俯拍森林空地，持长矛的士兵围成圆圈，圈中站着两个人"><figcaption><b>剧照 · 森林对峙</b>俯拍包围圈：士兵持矛围成一圈，对峙就在圈中央发生。</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM CASE 2 -->
+    <div class="team-case">
+      <h3 class="team-title">团队案例二 · Rise from the Ashes<span class="en-title">西方现代重生</span></h3>
+      <div class="team-layout">
+        <figure class="phone">
+          <video controls playsinline preload="metadata" poster="assets/team2-poster.jpg" src="assets/team2-web.mp4" aria-label="团队案例二《Rise from the Ashes》片段：女主逃亡，20 秒"></video>
+          <figcaption>9:16 竖屏 · 20 秒 · 原片截取</figcaption>
+        </figure>
+        <div class="team-body">
+          <p>西方现代重生题材。本人负责全剧人物设计，并与搭档各承担一半集数的制作；场景设计由搭档负责。女主前期屡次受伤，本人按剧情进程制作多套受伤状态资产，在伤情递进的同时保持面部、发型与五官比例不变，确保跨集一致性。片段截自逃亡段落：挣脱、奔逃、被制服，末句台词点出孩子遇险，将钩子落在下一集。</p>
+          <div class="team-stills">
+            <figure class="still"><img loading="lazy" decoding="async" src="assets/team2-still-bed.jpg" alt="剧照：女主被按在床上，女反派俯身用手指点着她的下巴"><figcaption><b>剧照 · 床边压制</b>女主被按在床上，女反派俯身点着她的下巴——前期受欺压的处境。</figcaption></figure>
+            <figure class="still"><img loading="lazy" decoding="async" src="assets/team2-still-dress.jpg" alt="剧照：女主裹着床单站在客厅里，前景是穿睡衣的男人扶着穿粉裙的女人"><figcaption><b>剧照 · 裹床单对峙</b>女主裹着床单站在客厅中央，与对面两人正面对峙。</figcaption></figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- INJURED STATES -->
+      <div class="injured">
+        <div class="sub-head">
+          <h3>女主受伤状态设计</h3><span class="en">INJURED STATES</span>
+          <p>同一角色、递进伤情。以定稿为基准，其余状态按伤情由轻至重排列：轻伤、面颊淤青、肩部撕裂、赤足逃亡、白裙受创、重伤、住院。各版本严格保留定稿的脸型、发型与项链等识别特征，仅调整伤情、血污与服装破损程度，以保证长线剧情中的状态连续性。</p>
+        </div>
+        <figure class="injured-final">
+          <img loading="lazy" decoding="async" src="assets/injured-0-final.jpg" alt="女主定稿四视图：正面面部特写与正、背、侧全身，白西装外套配浅蓝长裙，白底">
+          <figcaption><b>女主定稿 · 无伤状态</b>女主定稿：无伤状态——白西装外套配浅蓝长裙，圆牌项链是固定识别点，后面的每一版受伤状态都从这一版出发。</figcaption>
+        </figure>
+        <div class="injured-grid">
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-1-light.jpg" alt="受伤状态四视图：轻伤，肩部擦伤，面颊微红"><figcaption><b>轻伤</b>轻伤：肩部擦伤，面颊微红。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-2-bruise.jpg" alt="受伤状态四视图：脸颊淤青，神色惊惶"><figcaption><b>脸颊淤青</b>脸颊淤青，神色惊惶。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-3-shoulder.jpg" alt="受伤状态四视图：肩部撕裂出血，衣物污损"><figcaption><b>肩部撕裂</b>肩部撕裂出血，衣物污损。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-4-escape.jpg" alt="受伤状态四视图：赤足逃亡，腿部擦伤"><figcaption><b>赤足逃亡</b>赤足逃亡，腿部擦伤。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-5-dress.jpg" alt="受伤状态四视图：白裙受创，颈肩红痕、面颊淤青"><figcaption><b>白裙受创</b>白裙受创：颈肩红痕、面颊淤青。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-6-severe.jpg" alt="受伤状态四视图：重伤，额头血痕、全身血污"><figcaption><b>重伤</b>重伤：额头血痕、全身血污。</figcaption></figure>
+          <figure class="injured-item"><img loading="lazy" decoding="async" src="assets/injured-7-hospital.jpg" alt="受伤状态四视图：住院状态，病号服、输液、泪痕未干"><figcaption><b>住院状态</b>住院状态：病号服、输液、泪痕未干。</figcaption></figure>
+          <div class="injured-note"><b>设计原则</b>伤情递进、面部恒定：八套状态共用同一定稿面部与发型，仅调整伤处、血污与服装破损；观众能一眼认出同一人，也能一眼读出剧情走到了哪一步。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAKING OF -->
+  <section id="making">
+    <div class="sec-head">
+      <h2>制作过程</h2><span class="en">MAKING OF</span>
+      <p>制作方法分为两条路径：<b>自制剧</b>以剧本为起点，<b>重制剧</b>以原剧为起点；两者最终汇入统一的模型选择、剪辑与打包标准。以下分别以《Rise from the Ashes》与《The Miracle Doctor Returns》为例。</p>
+    </div>
+
+        <div class="part-head"><span class="pk">A</span><div><h3>自制剧 · 从剧本到资产</h3><p>有完整剧本：先做结构化拆解，再按拆解表制作资产。</p></div></div>
+
+<div class="sub-head">
+      <h3>A1 · 剧本拆解</h3><span class="en">ORIGINAL · BREAKDOWN</span>
+    </div>
+    <p class="process-text">自制剧具备完整剧本，制作起点是结构化拆解。全剧拆解为三张表，共 127 行：人物表 38 人，标注身份与人设；场景表 56 个场景，标注内外景、机位与动线；连续道具表 33 件，标注出现集数与状态递进——如核心吊坠由完好、出现裂纹至光泽暗淡的贯穿变化。拆解表既是资产制作的依据，也是全剧连续性的校验标准。下图为节选，完整表格为工作文件。</p>
+    <figure class="breakdown-frame">
+      <img loading="lazy" decoding="async" src="assets/process-step1-summary.png" alt="剧本拆解汇总图：《Rise from the Ashes》三张拆解表的节选——人物表 38 人、场景表 56 个场景、连续道具表 33 件，共 127 行">
+      <figcaption>剧本拆解汇总图（节选）· 人物表 38 人 · 场景表 56 个场景 · 连续道具表 33 件 · 共 127 行</figcaption>
+    </figure>
+    <div class="sub-head">
+      <h3>A2 · 资产制作</h3><span class="en">ORIGINAL · ASSETS</span>
+    </div>
+    <p class="process-text">依据拆解表制作人物三视图／四视图资产：同一面部、同一服装，正、侧、背三面严格对应，后续全部镜头均以此为生成基准。下为男女主各三套服装资产——面部保持不变，仅按剧情更换服装与状态。</p>
+    <div class="asset-grid">
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-elena-white.jpg" alt="Elena 三视图资产图：白色西装套装，面部特写与正、背、侧全身，白底"><figcaption><b>Elena · 白色西装套装</b></figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-elena-wine.jpg" alt="Elena 三视图资产图：酒红丝绒晚礼服，面部特写与正、背、侧全身，白底"><figcaption><b>Elena · 酒红丝绒晚礼服</b></figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-elena-tactical.jpg" alt="Elena 三视图资产图：黑色西装配战术背心，面部特写与正、背、侧全身，白底"><figcaption><b>Elena · 黑色西装 + 战术背心</b></figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-kael-stripe.jpg" alt="Kael 三视图资产图：深色条纹西装配酒红领带，面部特写与正、侧、背全身，白底"><figcaption><b>Kael · 深色条纹西装</b></figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-kael-silk.jpg" alt="Kael 三视图资产图：黑色丝质睡衣，面部特写与正、侧、背全身，白底"><figcaption><b>Kael · 黑色丝质睡衣</b></figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/process-kael-jacket.jpg" alt="Kael 三视图资产图：黑色飞行夹克，面部特写与正、侧、背全身，白底"><figcaption><b>Kael · 黑色飞行夹克</b></figcaption></figure>
+    </div>
+
+        <div class="part-head"><span class="pk">B</span><div><h3>重制剧 · 从原剧到本地化资产</h3><p>无剧本、只有原剧：先拆解原剧并建立设定对应表，再按新设定重做资产。</p></div></div>
+
+<div class="sub-head">
+      <h3>B1 · 设定转化</h3><span class="en">REMAKE · CONVERSION</span>
+    </div>
+    <p class="process-text">重制剧无剧本、仅有原剧成片，流程为：逐集观看原剧并完成拆解，建立新旧设定对应表，再按新设定重做全部资产。原剧《天医出山》重制为拉美重制化版本的《The Miracle Doctor Returns》（见混剪第二段）：人物 55 人逐项对应，场景由 30 个扩展为 35 个，道具 22 件一一对应。设定全面本地化，人物关系、剧情功能与道具作用保持不变。</p>
+    <figure class="breakdown-frame">
+      <img loading="lazy" decoding="async" src="assets/process-step1-remake-summary.png" alt="重制剧设定转化对应表节选：原剧《天医出山》 → 重制版《The Miracle Doctor Returns》，人物、场景、道具 10 组对应——林方对应 Leo、陈雪对应 Mia、柳念慈对应 Emma、柳念亭对应 Lily，绿皮火车对应长途豪华巴士、小面馆对应墨西哥家庭小餐馆、爵士酒吧 BLUE NOTE 对应 BLUE NIGHT，竹叶黑唐装对应龙舌兰工装夹克、金色龙头拐杖对应金色狮首拐杖、木制法剑对应硬木训练棍">
+      <figcaption>重制剧对应表（节选）· 原剧《天医出山》 → 重制版《The Miracle Doctor Returns》· 人物 55 人逐项对应 · 场景 30 个变 35 个 · 道具 22 件一一对应</figcaption>
+    </figure>
+
+    <div class="sub-head">
+      <h3>B2 · 拉美重制化人物资产</h3><span class="en">REMAKE · ASSETS</span>
+    </div>
+    <p class="process-text">依据对应表制作拉美重制化人物资产。该剧为一男五女的多线情感配置：男主 Leo 与 Mia、Emma、Lily、Ava、Ella 五位女主，均为三视图／四视图标准资产，面部与服装在正、侧、背三面严格一致，作为全剧镜头生成的统一基准。</p>
+    <div class="asset-grid">
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-leo.jpg" alt="Leo 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，白色衬衫、卡其长裤，白底"><figcaption>Leo · 男主 — 白色衬衫、卡其长裤</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-mia.jpg" alt="Mia 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，露肩针织上衣、米色短裤、蓝宝石吊坠，白底"><figcaption>Mia · 餐馆老板娘 — 露肩针织上衣、米色短裤、蓝宝石吊坠</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-emma.jpg" alt="Emma 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，白色缎面上衣、炭灰半裙、V 形钻石项链，白底"><figcaption>Emma · Blake 集团 CEO — 白色缎面上衣、炭灰半裙、V 形钻石项链</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-lily.jpg" alt="Lily 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，黑色蕾丝吊带、黑皮裙、黑丝，白底"><figcaption>Lily · 品牌与社交媒体负责人 — 黑色蕾丝吊带、黑皮裙、黑丝</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-ava.jpg" alt="Ava 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，花卉印花抹胸长裙、红色发饰、祖母绿项链，白底"><figcaption>Ava · 医学院风云人物 — 花卉印花抹胸长裙、红色发饰、祖母绿项链</figcaption></figure>
+      <figure class="asset"><img loading="lazy" decoding="async" src="assets/remake-ella.jpg" alt="Ella 拉美重制化人物资产图：面部特写与正面、侧面、背面全身，白色短上衣、牛仔短裤，白底"><figcaption>Ella · 开场与男主相遇的女孩 — 白色短上衣、牛仔短裤</figcaption></figure>
+    </div>
+
+        <div class="part-head"><span class="pk">C</span><div><h3>模型选择 · 按镜头需求匹配</h3><p>不预设统一模型：按每场戏的质感、光线与调度需求逐场选型，再以同场对比验证。</p></div></div>
+
+    <div class="sub-head">
+      <h3>C1 · 选型标准</h3><span class="en">MODEL SELECTION</span>
+    </div>
+    <p class="process-text">选型判断维度有三：质感稳定性、光线与镜头调度能力、素材复用需求。两款主力模型的适用场景如下，具体镜头的归属在生成前逐场判定。</p>
+    <div class="model-notes">
+      <div class="model-note"><b>Wan 3.0 · 适用：质感优先的镜头</b><br>人物近景与特写、对白情绪戏；需要抽帧复用、叠图合成的镜头；皮肤质感要求高的段落。<br><span style="color:var(--ink3)">依据：质感稳定，复用与叠图后仍保持皮肤干净，不易出现脏图、油图。局限：镜头调度较弱，对提示词精确度要求高，复杂运镜需反复调试。</span></div>
+      <div class="model-note"><b>Seedance 2.5 · 适用：调度与光线优先的镜头</b><br>多人场面与复杂运镜；夜景、氛围光等对光线真实感要求高的段落；需要模型自行理解镜头语言的镜头。<br><span style="color:var(--ink3)">依据：光线真实且可控，镜头理解力强。局限：质感略带朦胧与模糊，抽帧复用会放大这一问题，故特写与复用镜头一般不作为首选。</span></div>
+    </div>
+
+<div class="sub-head">
+      <h3>C2 · 对比实证</h3><span class="en">MODEL EVIDENCE</span>
+    </div>
+    <p class="process-text">以下为同一场夜店戏的双模型成片帧：大景对比调度与光线，特写对比皮肤质感，结论与 C1 的选型标准一致——Wan 3.0 胜在质感稳定，Seedance 2.5 胜在光线与调度。</p>
+    <div class="model-grid">
+      <figure class="model-item"><img loading="lazy" decoding="async" src="assets/process-step3-wan.jpg" alt="Wan 3.0 夜店大景成片帧：女主穿黑色蕾丝裙坐在皮沙发上，两名男子站在两侧，夜店包间、水晶吊灯与大理石地面"><figcaption><b>Wan 3.0 · 夜店大景</b></figcaption></figure>
+      <figure class="model-item"><img loading="lazy" decoding="async" src="assets/process-step3-seedance.jpg" alt="Seedance 2.5 夜店大景成片帧：同一夜店包间，女主蜷坐在皮沙发上，三名男子站在周围，水晶吊灯与大理石茶几"><figcaption><b>Seedance 2.5 · 夜店大景</b></figcaption></figure>
+    </div>
+    <p class="process-text" style="margin:16px 0">人物特写组：皮肤质感的差异在近景中最为直观。</p>
+    <div class="model-grid">
+      <figure class="model-item"><img loading="lazy" decoding="async" src="assets/process-step3-wan.jpg" alt="Wan 3.0 夜店大景成片帧：女主穿黑色蕾丝裙坐在皮沙发上，两名男子站在两侧，夜店包间、水晶吊灯与大理石地面"><figcaption><b>Wan 3.0 · 夜店大景</b></figcaption></figure>
+      <figure class="model-item"><img loading="lazy" decoding="async" src="assets/process-step3-seedance-close.jpg" alt="Seedance 2.5 人物特写成片帧：同一场夜店戏，Lily 穿黑色蕾丝蜷坐在紫色皮沙发上的人物特写，面部带泪痕"><figcaption><b>Seedance 2.5 · 人物特写</b></figcaption></figure>
+    </div>
+    <div class="model-notes">
+      <p class="model-note"><b>Wan 3.0 · 结论：</b>质感稳定性突出，素材复用与叠图合成后，画面质感与人物皮肤仍能保持干净，不易产生脏图、油图；短板在于镜头调度能力较弱，对提示词的精确度要求较高。</p>
+      <p class="model-note"><b>Seedance 2.5 · 结论：</b>光线表现真实且可控，镜头语言理解力强，复杂调度完成度高；短板在于质感略带朦胧与模糊，抽帧复用时会放大这一问题。</p>
+    </div>
+
+    <div class="part-head"><span class="pk">D</span><div><h3>后期 · 剪辑与打包</h3><p>两条路径共用同一套后期标准：剪辑节奏、交付结构与文件命名统一。</p></div></div>
+
+    <div class="sub-head">
+      <h3>剪辑</h3><span class="en">POST · EDITING</span>
+    </div>
+    <p class="process-text">以主导剧《The Ex-Con Mom Strikes Back》第一集为例：成片约 2.5 分钟，打斗场面密集，剪辑工作量大。时间线采用多轨并行结构，画面、字幕、音乐、音效分轨管理，音乐衔接与音效落点均按动作打点对齐。下图为剪映专业版时间线（EP-01）。</p>
+    <figure class="breakdown-frame">
+      <img loading="lazy" decoding="async" src="assets/process-step4-editing.png" alt="剪映专业版时间线截图：《The Ex-Con Mom Strikes Back》EP-01，多轨并行，画面、字幕、音乐与音效分轨排列">
+      <figcaption>剪映专业版时间线 · 《The Ex-Con Mom Strikes Back》EP-01</figcaption>
+    </figure>
+
+    <div class="sub-head">
+      <h3>全剧打包</h3><span class="en">POST · PACKAGING</span>
+    </div>
+    <p class="process-text">全剧打包按三套交付物组织：带字幕版原片、无字幕纯净版原片、全集字幕 SRT 文件。文件统一以 EP-01、EP-02……顺序命名；全剧共 77 集，总时长约 2 小时。</p>
+    <figure class="breakdown-frame">
+      <img loading="lazy" decoding="async" src="assets/process-step5-packaging.png" alt="全剧打包文件夹截图：EP-01 到 EP-77 共 77 个文件，属性显示总时长 01:59:57">
+      <figcaption>全剧打包 · EP-01 到 EP-77 · 共 77 集 · 总时长 01:59:57</figcaption>
+    </figure>
+  </section>
+
+  <!-- WORKS RANGE -->
+  <section id="works">
+    <div class="sec-head">
+      <h2>剧目范围</h2><span class="en">SELECTED TITLES</span>
+      <p>混剪所涉 6 部作品均为海外仿真人短剧，题材与世界观各异，覆盖现代、玄幻与兽人等类型。</p>
+    </div>
+    <div class="works">
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" style="object-position:center 20%" src="assets/still-action.jpg" alt="《The Ex-Con Mom Strikes Back》混剪画面"></div>
+        <div class="bd"><div class="ttl">The Ex-Con Mom Strikes Back</div><div class="tags"><span class="tag hot">ACTION</span><span class="tag hot">REVENGE</span><span class="tag">动作</span><span class="tag">复仇</span></div></div>
+      </article>
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" style="object-position:center 15%" src="assets/still-fight.jpg" alt="《The Miracle Doctor Returns》混剪画面"></div>
+        <div class="bd"><div class="ttl">The Miracle Doctor Returns</div><div class="tags"><span class="tag hot">DANCE</span><span class="tag hot">FIGHT</span><span class="tag">舞蹈</span><span class="tag">打斗</span></div></div>
+      </article>
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" src="assets/still-ceo.jpg" alt="《He Planned My Accidental Love》混剪画面"></div>
+        <div class="bd"><div class="ttl">He Planned My Accidental Love</div><div class="tags"><span class="tag hot">CEO ROMANCE</span><span class="tag">霸道总裁</span><span class="tag">现代</span></div></div>
+      </article>
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" style="object-position:center 12%" src="assets/still-rebirth.jpg" alt="《Rise from the Ashes》混剪画面"></div>
+        <div class="bd"><div class="ttl">Rise from the Ashes</div><div class="tags"><span class="tag hot">REBIRTH</span><span class="tag">重生</span><span class="tag">逆袭</span></div></div>
+      </article>
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" style="object-position:center 5%" src="assets/still-magic.jpg" alt="《Revenge of the Iron Rose》混剪画面"></div>
+        <div class="bd"><div class="ttl">Revenge of the Iron Rose</div><div class="tags"><span class="tag hot">MAGIC</span><span class="tag hot">FANTASY WAR</span><span class="tag">西方魔法</span><span class="tag">玄幻战争</span></div></div>
+      </article>
+      <article class="work">
+        <div class="ph"><img loading="lazy" decoding="async" src="assets/still-beast.jpg" alt="《Deer Unleashed Memories》混剪画面"></div>
+        <div class="bd"><div class="ttl">Deer Unleashed Memories</div><div class="tags"><span class="tag hot">BEASTMAN ROMANCE</span><span class="tag">兽人爱情</span></div></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="sec-head">
+      <h2>制作流程</h2><span class="en">WORKFLOW</span>
+      <p>从剧本到交付的完整链路，每一步都可独立完成，并建有自己的资产库复用。</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="no">01</div><h3>剧本拆解</h3><p>任意剧本 / 原剧拆解为人物、场景、道具清单，理清关系与连续性。</p></div>
+      <div class="step"><div class="no">02</div><h3>资产制作</h3><p>人物、场景、道具参考图制作与管理，保证全剧形象统一。</p></div>
+      <div class="step"><div class="no">03</div><h3>AI 视频生成</h3><p>按分镜逐镜生成，并按镜头需求选择模型，控制动作、表演与镜头衔接。</p></div>
+      <div class="step"><div class="no">04</div><h3>剪辑成片</h3><p>节奏、卡点、音画同步与情绪曲线，平均每天产出 3–5 分钟成片。</p></div>
+      <div class="step"><div class="no">05</div><h3>全剧打包</h3><p>分集整合、统一命名、标题、海报、多比例版本、无字幕版与全剧字幕包。</p></div>
+    </div>
+    <div class="tools">
+      <div class="tool-card">
+        <h3>图片生成</h3>
+        <p>角色、场景与道具资产的主要生产工具。</p>
+        <div class="tags"><span class="tag">GPT Images（制作期 2.0 / 2.5 · 现 2.6）</span><span class="tag">Nano Banana</span><span class="tag">Midjourney</span></div>
+      </div>
+      <div class="tool-card">
+        <h3>视频生成</h3>
+        <p>按题材与镜头难度选用模型，兼顾质量与生成成本。</p>
+        <div class="tags"><span class="tag">Seedance 2.5</span><span class="tag">Wan 3.0</span><span class="tag">MiniMax H3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONAL -->
+  <section id="personal">
+    <div class="sec-head">
+      <h2>个人创作</h2><span class="en">PERSONAL WORK</span>
+      <p>个人账号「久醉哈哈」于抖音与 B 站同步运营：抖音粉丝 3.8 万、B 站粉丝 1.2 万。个人 AI 小剧场系列共 20 余集，单集 1–3 分钟，系列总播放 123 万，抖音单支最高点赞 65 万。下为两件代表作：自制短剧与卡点剪辑各一。</p>
+    </div>
+    <div class="personal">
+      <div class="p-card">
+        <h3>自媒体账号 · 久醉哈哈</h3>
+        <p>双平台同名运营，持续更新 AI 短视频；快节奏卡点剪辑为个人代表性风格。</p>
+        <div class="p-nums">
+          <div><div class="n">65万</div><div class="l">单条视频最高点赞</div></div>
+          <div><div class="n">3.8万</div><div class="l">抖音粉丝</div></div>
+          <div><div class="n">1.2万</div><div class="l">B 站粉丝</div></div>
+        </div>
+      </div>
+      <div class="p-card">
+        <h3>横屏短片 · 《饿殍》系列</h3>
+        <p>横屏短片系列，与竖屏短剧分线创作，侧重完整的短片叙事。</p>
+        <div class="p-nums">
+          <div><div class="n">123万</div><div class="l">系列总播放</div></div>
+          <div><div class="n">2.1万</div><div class="l">单条最高点赞</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="personal-videos">
+      <figure class="p-video land">
+        <video controls playsinline preload="metadata" poster="assets/personal-01-poster.jpg" src="assets/personal-01-self-made.mp4" aria-label="个人创作自制短剧：3D漫剧，44 秒横屏视频"></video>
+        <figcaption><b>自制短剧 · 3D漫剧</b>　追逐起势、室内外转场，结尾一家三口走出客栈收束，44 秒。</figcaption><div class="p-meta"><span>明末题材</span><span>横屏短片</span><span>叙事完整</span></div>
+      </figure>
+      <figure class="p-video vert">
+        <video controls playsinline preload="metadata" poster="assets/personal-02-poster.jpg" src="assets/personal-02-beat-cut.mp4" aria-label="个人创作卡点剪辑：谁是明末最强双子星，37 秒竖屏视频"></video>
+        <figcaption><b>卡点剪辑 · 《谁是明末最强双子星？》</b>　八组人物对位、一组一卡，节奏与字幕打点严格对齐，37 秒。</figcaption><div class="p-meta"><span>竖屏卡点</span><span>原创角色</span><span>快节奏剪辑</span></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE + CONTACT -->
+  <section id="contact">
+    <div class="sec-head">
+      <h2>经历与联系</h2><span class="en">EXPERIENCE &amp; CONTACT</span>
+    </div>
+    <div class="exp">
+      <div class="when">2026.07 — 2026.10</div>
+      <div>
+        <h3>AI 短剧制作师 · 深圳稻谷文化传媒有限公司</h3>
+        <p>任职期间全流程参与约 20 部海外仿真人短剧，工作覆盖剧本拆解、资产制作、AI 视频生成、剪辑成片与全剧打包交付。此前自 2026 年 2 月起以「久醉哈哈」独立从事 AI 内容创作，至今持续更新。</p>
+      </div>
+    </div>
+    <div class="contact" style="margin-top:16px">
+      <div class="c-card"><div class="k">电话</div><div class="v"><a href="tel:13822879881">138 2287 9881</a></div><div class="s">点击直接拨打</div></div>
+      <div class="c-card"><div class="k">邮箱</div><div class="v"><a href="mailto:1011388066@qq.com">1011388066@qq.com</a></div><div class="s">点击直接写邮件</div></div>
+      <div class="c-card"><div class="k">抖音 / B 站</div><div class="v"><a href="https://www.douyin.com/user/MS4wLjABAAAAhcgj62VtpbGlrSOnr7o6MMAW6U02c_uIF1A4ui3zpcEgfSRwC-K2d1i1BOjrVZMZ" target="_blank" rel="noopener">久醉哈哈</a></div><div class="s">抖音 3.8 万 · B 站 1.2 万粉丝</div></div>
+      <div class="c-card"><div class="k">到岗时间</div><div class="v">一周内到岗</div><div class="s">Base 深圳</div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>赵奕聪 · AI 短剧制作师</span>
+    <span>作品混剪取材自已参与制作的海外短剧</span>
+  </div>
+</footer>
+
+
+</body>
+</html>
